@@ -7,8 +7,9 @@ import jakarta.persistence.*;
 public class ProductEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(name = "storeId")
+    private int storeId;
     @Column(name = "title")
     private String title;
     @Column(name = "description")
@@ -19,14 +20,16 @@ public class ProductEntity {
     public ProductEntity() {
     }
 
-    public ProductEntity(String title, String description, int price) {
+    public ProductEntity(Integer storeId, String title, String description, int price) {
+        this.storeId = storeId;
         this.title = title;
         this.description = description;
         this.price = price;
     }
 
-    public ProductEntity(int id, String title, String description, int price) {
+    public ProductEntity(Integer id, Integer storeId, String title, String description, int price) {
         this.id = id;
+        this.storeId = storeId;
         this.title = title;
         this.description = description;
         this.price = price;
@@ -35,6 +38,10 @@ public class ProductEntity {
 
     public int getId() {
         return id;
+    }
+
+    public int getStoreId() {
+        return storeId;
     }
 
     public String getTitle() {

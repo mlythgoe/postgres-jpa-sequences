@@ -1,6 +1,6 @@
 package com.mike.postgresjpasequences.api;
 
-public record Product(int id, String title, String description, int price){
+public record Product(Integer id, Integer storeId, String title, String description, Integer price){
 
 }
 
