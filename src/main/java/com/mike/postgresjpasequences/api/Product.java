@@ -1,4 +1,6 @@
-package com.mike.postgresjpasequences;
+package com.mike.postgresjpasequences.api;
 
-public record Product {
+public record Product(int id, String title, String description, int price){
+
 }
+
