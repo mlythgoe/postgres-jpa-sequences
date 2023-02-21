@@ -1,11 +1,12 @@
-DROP TABLE IF EXISTS Product;
 
-create sequence devschema.seq_store_0001 START 1 INCREMENT 1;
-
-CREATE TABLE product
+create table if not exists product
 (
     id          bigint,
-    title       VARCHAR(50) NOT NULL,
-    description VARCHAR(50) NOT NULL,
-    price       INTEGER     NOT NULL
-);
+    title       varchar(50)       not null,
+    description varchar(50)       not null,
+    price       integer           not null,
+    store_id    integer default 1 not null
+    );
+
+alter table product
+    owner to mike;
