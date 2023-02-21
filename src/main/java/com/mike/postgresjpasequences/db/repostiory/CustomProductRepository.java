@@ -3,30 +3,31 @@ package com.mike.postgresjpasequences.db.repostiory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import org.springframework.stereotype.Repository;
 
-import java.math.BigInteger;
-
+@Repository
 public class CustomProductRepository { //implements ProductRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    public BigInteger getNextCustomerNumber(String storeNumber) {
+    public Long getNextProductId(Long storeNumber) {
 
-        BigInteger nextNumber = null;
+        Long nextNumber = null;
 
         try {
-            Query q = em.createNativeQuery("SELECT NEXT VALUE FOR customer_id_seq_" + storeNumber);
-            nextNumber = (BigInteger) q.getSingleResult();
+            Query getNextCustomerSequence = em.createNativeQuery("SELECT nextval(\'devschema.customer_id_seq_" + storeNumber + "\')");
+            nextNumber = (Long) getNextCustomerSequence.getSingleResult();
         } catch (RuntimeException runtimeException) {
             try {
 
-                em.createNativeQuery(
-                        "create sequence customer_id_seq_" + storeNumber +
-                                " start with 10 increment by 1 maxvalue 99999999;").executeUpdate();
-                Query q = em.createNativeQuery("SELECT NEXT VALUE FOR customer_id_seq_" + storeNumber);
+                var createSequence = "create sequence devschema.customer_id_seq_" + storeNumber +
+                        " start 10 increment 1 minvalue 1";
+                em.createNativeQuery(createSequence).executeUpdate();
 
-                nextNumber = (BigInteger) q.getSingleResult();
+                Query q2 = em.createNativeQuery("SELECT nextval(\'devschema.customer_id_seq_" + storeNumber + "\')");
+
+                nextNumber = (Long) q2.getSingleResult();
 
             } catch (Throwable t) {
 

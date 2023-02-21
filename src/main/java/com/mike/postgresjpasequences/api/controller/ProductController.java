@@ -2,8 +2,9 @@ package com.mike.postgresjpasequences.api.controller;
 
 import com.mike.postgresjpasequences.api.Product;
 import com.mike.postgresjpasequences.db.entity.ProductEntity;
+import com.mike.postgresjpasequences.db.repostiory.CustomProductRepository;
 import com.mike.postgresjpasequences.db.repostiory.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -16,8 +17,12 @@ public class ProductController
 {
     ProductRepository productRepository;
 
-    public ProductController(ProductRepository productRepository) {
+    CustomProductRepository customProductRepository;
+
+    public ProductController(ProductRepository productRepository,
+                             CustomProductRepository customProductRepository) {
         this.productRepository = productRepository;
+        this.customProductRepository = customProductRepository;
     }
 
     @GetMapping(path="/", produces = "application/json")
@@ -35,13 +40,17 @@ public class ProductController
 
     }
 
+    @Transactional
     @PostMapping(path= "/", consumes = "application/json", produces = "application/json")
     public Product createProduct(@RequestBody Product product) {
 
+
         System.out.println("Create product" + product);
 
-        ProductEntity productEntity = new ProductEntity(product.id(), product.title(),
-                product.description(), product.price());
+        var productId = customProductRepository.getNextProductId(product.storeId());
+
+        ProductEntity productEntity = new ProductEntity(productId, product.storeId(),
+                product.title(),  product.description(), product.price());
 
         ProductEntity savedProductEntity = productRepository.save(productEntity);
 

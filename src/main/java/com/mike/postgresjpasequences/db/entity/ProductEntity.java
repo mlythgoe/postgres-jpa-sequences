@@ -7,9 +7,9 @@ import jakarta.persistence.*;
 public class ProductEntity {
 
     @Id
-    private int id;
+    private Long id;
     @Column(name = "storeId")
-    private int storeId;
+    private Long storeId;
     @Column(name = "title")
     private String title;
     @Column(name = "description")
@@ -20,14 +20,14 @@ public class ProductEntity {
     public ProductEntity() {
     }
 
-    public ProductEntity(Integer storeId, String title, String description, int price) {
+    public ProductEntity(Long storeId, String title, String description, int price) {
         this.storeId = storeId;
         this.title = title;
         this.description = description;
         this.price = price;
     }
 
-    public ProductEntity(Integer id, Integer storeId, String title, String description, int price) {
+    public ProductEntity(Long id, Long storeId, String title, String description, int price) {
         this.id = id;
         this.storeId = storeId;
         this.title = title;
@@ -36,11 +36,11 @@ public class ProductEntity {
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public int getStoreId() {
+    public Long getStoreId() {
         return storeId;
     }
 
